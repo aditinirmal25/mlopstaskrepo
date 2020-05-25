@@ -1,4 +1,7 @@
 import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
 
 dataset = pd.read_csv("Social_Network_Ads.csv")
 
@@ -8,11 +11,7 @@ y = dataset['Purchased']
 X=x.values
 y=y.values
 
-from sklearn.model_selection import train_test_split
-
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
-
-from sklearn.neighbors import KNeighborsClassifier
 
 model = KNeighborsClassifier(n_neighbors=15)
 
@@ -20,6 +19,10 @@ model.fit(X_train, y_train)
 
 y_pred=model.predict(X_test)
 
-from sklearn.metrics import accuracy_score
+accuracy=accuracy_score(y_test, y_pred)
+accuracy=accuracy*100
+accuracy_str=str(accuracy)
+print("Your Accuracy is:" , accuracy)
 
-accuracy_score(y_test, y_pred)
+with open('accuracy.txt','w') as f:
+    f.write(accuracy_str)
